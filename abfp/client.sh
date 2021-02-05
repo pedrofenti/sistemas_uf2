@@ -9,6 +9,7 @@ OK="OK_CONN"
 KO="KO_CONN"
 YES="YES_IT_IS"
 OK_FILE="OK_FILE_NAME"
+FILE_NAME="archivo_salida.vaca"
 
 echo "(2) Seanding headers"
 
@@ -39,19 +40,20 @@ fi
 echo "(10) File name"
 
 sleep 1
-echo "File_name Magno.jpg" | nc -q 1 $IP_SERVER $PORT
+MD5=`md5sum $FILE_NAME`
+echo "FILE_NAME $FILE_NAME $MD5" | nc -q 1 $IP_SERVER $PORT
 
 echo "(11) Listening"
 
 RESPONSE=`nc -l -p $PORT`
 if [ "$RESPONSE" != $OK_FILE ]; then
-echo "Error: Lost connection"
+echo "Error: something happened with the file name"
 exit 3
 fi
 
 echo "(14) Data"
 
 sleep 1 
-
+cat $FILE_NAME | nc -l -p $IP_SERVER $PORT
 
 exit 0
