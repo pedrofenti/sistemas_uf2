@@ -41,7 +41,7 @@ fi
 echo "(10) File name"
 
 sleep 1
-MD5=`md5sum $FILE_NAME | cut -d " " -f  2`  
+MD5=`md5sum $FILE_NAME | cut -d " " -f  1`  
 echo "FILE_NAME $FILE_NAME $MD5" | nc -q 1 $IP_SERVER $PORT
 
 echo "(11) Listening"
@@ -55,7 +55,7 @@ fi
 echo "(14) Data"
 
 sleep 1 
-echo "`cat $FILE_NAME | nc -q 1 $IP_SERVER $PORT`"
+cat $FILE_NAME | nc -q 1 $IP_SERVER $PORT
 
 echo "(15) Listening"
 

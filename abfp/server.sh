@@ -51,7 +51,7 @@ MD5_NAME=`echo $FILE_NAME | cut -d " " -f 3`
 
 echo "(12) Response"
 
-MD5_CHECK=`md5sum $NAME | cut -d " " -f 2`
+MD5_CHECK=`md5sum $NAME | cut -d " " -f 1`
 
 if [ "$MD5_CHECK" != "$MD5_NAME" ]; then 
 echo "Error: worng file name"
@@ -65,7 +65,7 @@ echo "OK_FILE_NAME" | nc -q 1 $IP_CLIENT $PORT
 
 echo "(13) Listening"
 
-`nc -l -p $PORT` > archivo_entrada.vaca
+nc -l -p $PORT > archivo_entrada.vaca
 cat archivo_entrada.vaca
 echo "(16) Response"
 
