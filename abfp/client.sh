@@ -28,7 +28,7 @@ fi
 echo "(6) Handshake"
 
 sleep 1
-echo "This_is_my_classroom" | nc -q 1 $IP_SERVER $PORT
+echo "THIS_IS_MY_CLASSROOM" | nc -q 1 $IP_SERVER $PORT
 
 echo "(7) Listening"
 
@@ -41,7 +41,7 @@ fi
 echo "(10) File name"
 
 sleep 1
-MD5=`md5sum $FILE_NAME | cut -d " " -f  1`  
+MD5=`echo $FILE_NAME | md5sum | cut -d " " -f  1`  
 echo "FILE_NAME $FILE_NAME $MD5" | nc -q 1 $IP_SERVER $PORT
 
 echo "(11) Listening"
