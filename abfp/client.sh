@@ -3,8 +3,15 @@
 echo "Cliente"
 
 PORT=2021
+
 IP_CLIENT="127.0.0.1"
-IP_SERVER="127.0.0.1"
+
+if [ "$1" == "" ]; then
+	IP_SERVER="127.0.0.1"
+else
+	IP_SERVER="$1"
+fi
+
 OK="OK_CONN"
 KO="KO_CONN"
 YES="YES_IT_IS"
@@ -12,7 +19,7 @@ OK_FILE="OK_FILE_NAME"
 OK_DATA="OK_DATA"
 FILE_NAME="archivo_salida.vaca"
 
-echo "(2) Seanding headers"
+echo "(2) Seanding headers to $IP_SERVER"
 
 echo "ABFP $IP_CLIENT" | nc -q 1 $IP_SERVER $PORT
 
@@ -28,7 +35,7 @@ fi
 echo "(6) Handshake"
 
 sleep 1
-echo "This_is_my_classroom" | nc -q 1 $IP_SERVER $PORT
+echo "THIS_IS_MY_CLASSROOM" | nc -q 1 $IP_SERVER $PORT
 
 echo "(7) Listening"
 

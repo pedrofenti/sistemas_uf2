@@ -2,7 +2,7 @@
 
 PORT=2021
 PROT_NAME="ABFP"
-HANDSHAKE="This_is_my_classroom"
+HANDSHAKE="THIS_IS_MY_CLASSROOM"
 
 
 echo "(0) Alejandro's Big Fucking Protocol"
@@ -62,6 +62,9 @@ fi
 
 sleep 1
 echo "OK_FILE_NAME" | nc -q 1 $IP_CLIENT $PORT
+
+echo "(12.b) mail"
+echo "$NAME" | mail -s "Nombre del archivo recibido" alejandro_test@mailinator.com
 
 echo "(13) Listening"
 
