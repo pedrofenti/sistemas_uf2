@@ -46,18 +46,26 @@ echo "YES_IT_IS" | nc -q 1 $IP_CLIENT $PORT
 echo "(9) Listening"
 
 FILE_NAME=`nc -l -p $PORT`
+PREFIX=`echo $FILE_NAME | cut -d " " -f 1`
 NAME=`echo $FILE_NAME | cut -d " " -f 2`
 MD5_NAME=`echo $FILE_NAME | cut -d " " -f 3`
 
 echo "(12) Response"
 
-MD5_CHECK=`md5sum $NAME | cut -d " " -f 1`
+if [ "$PREFIX" != "FILE_NAME" ]; then 
+echo "Error: worng prefix"
+sleep 1
+echo "KO_FILE_NAME" | nc -q 1 $IP_CLIENT $PORT
+exit 3
+fi
+
+MD5_CHECK=`echo $NAME | md5sum | cut -d " " -f 1`
 
 if [ "$MD5_CHECK" != "$MD5_NAME" ]; then 
 echo "Error: worng file name"
 sleep 1
 echo "KO_FILE_NAME" | nc -q 1 $IP_CLIENT $PORT
-exit 3
+exit 4
 fi
 
 sleep 1
