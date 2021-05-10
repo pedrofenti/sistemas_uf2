@@ -3,7 +3,7 @@
 echo "Cliente"
 
 PORT=2021
-
+INPUT_PATH="entrada_cliente/"
 IP_CLIENT="127.0.0.1"
 
 if [ "$1" == "" ]; then
@@ -17,7 +17,6 @@ KO="KO_CONN"
 YES="YES_IT_IS"
 OK_FILE="OK_FILE_NAME"
 OK_DATA="OK_DATA"
-FILE_NAME="archivo_salida.vaca"
 
 echo "(2) Seanding headers to $IP_SERVER"
 
@@ -45,24 +44,46 @@ echo "Error: Connection refused"
 exit 2
 fi
 
-echo "(10) File name"
 
+echo "(10.a) Num files"
+
+#enviar num archivos a enviar
 sleep 1
-MD5=`echo $FILE_NAME | md5sum | cut -d " " -f  1`  
-echo "FILE_NAME $FILE_NAME $MD5" | nc -q 1 $IP_SERVER $PORT
+NUM_FILES=`ls $INPUT_PATH | wc -w`
 
-echo "(11) Listening"
+echo "NUM_FILES $NUM_FILES" | nc -q 1 $IP_SERVER $PORT
 
+echo "(10.b) Listening"
 RESPONSE=`nc -l -p $PORT`
-if [ "$RESPONSE" != $OK_FILE ]; then
-echo "Error: something happened with the file name"
-exit 3
+
+if [ "$RESPONSE" != "OK_NUM_FILES" ]; then
+ echo "ERROR: Prefijo NUM_FILES incorrecto"
+ exit 3
 fi
 
-echo "(14) Data"
+for FILE_NAME in `ls $INPUT_PATH`; do
 
-sleep 1 
-cat $FILE_NAME | nc -q 1 $IP_SERVER $PORT
+	echo "(10.c) File names"
+
+	sleep 1
+	MD5=`echo $FILE_NAME | md5sum | cut -d " " -f  1`  
+	echo "FILE_NAME $FILE_NAME $MD5" | nc -q 1 $IP_SERVER $PORT
+
+	echo "(11) Listening"
+
+	RESPONSE=`nc -l -p $PORT`
+	if [ "$RESPONSE" != $OK_FILE ]; then
+		echo "Error: something happened with the file name"
+	exit 3
+	fi
+
+	echo "(14) Data"
+
+	sleep 1 
+	cat $INPUT_PATH$FILE_NAME | nc -q 1 $IP_SERVER $PORT
+
+done 
+
 
 echo "(15) Listening"
 
@@ -76,4 +97,5 @@ echo "(18) Goodbye"
 
 sleep 1
 echo "ABFP GOOD_BYE" | nc -q 1 $IP_SERVER $PORT
+
 exit 0
